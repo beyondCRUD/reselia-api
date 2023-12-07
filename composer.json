@@ -24,10 +24,17 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/",
-            "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
-        }
+            "App\\": "src/App",
+            "Domain\\": "src/Domain",
+            "Support\\": "src/Support"
+        },
+        "classmap": [
+            "database/seeders",
+            "database/factories"
+        ],
+        "files" : [
+            "src/Support/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
