@@ -17,15 +17,6 @@
             <directory>src</directory>
         </include>
     </source>
-    <coverage cacheDirectory=".phpunit.cache/code-coverage"
-              includeUncoveredFiles="true"
-              pathCoverage="false"
-              ignoreDeprecatedCodeUnits="true"
-              disableCodeCoverageIgnore="true">
-        <report>
-            <clover outputFile="clover.xml" />
-        </report>
-    </coverage>
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
