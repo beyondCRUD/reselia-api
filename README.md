@@ -3,7 +3,6 @@
 <p align="center">
 <a href="https://github.com/beyondCRUD/reselia-api/actions"><img src="https://github.com/beyondCRUD/reselia-api/actions/workflows/laravel.yml/badge.svg" alt="Testing Status"></a>
 <a href="https://github.com/beyondCRUD/reselia-api/actions"><img src="https://github.com/beyondCRUD/reselia-api/raw/image-data/coverage.svg" alt="Code Coverage"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
