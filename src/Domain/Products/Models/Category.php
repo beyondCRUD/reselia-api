@@ -10,6 +10,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property string $id
+ * @property string $title
+ * @property null|string $parent_id
+ */
 class Category extends Model
 {
     use HasFactory, HasUlids, SoftDeletes;
