@@ -55,7 +55,7 @@ jobs:
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
       - name: Execute tests (Unit and Feature tests) via PestPHP
-        run: XDEBUG_MODE=coverage ./vendor/bin/pest --coverage --coverage-clover code-coverage.xml
+        run: XDEBUG_MODE=coverage ./vendor/bin/pest --coverage --coverage-clover clover.xml
       - name: Make code coverage badge
         uses: timkrase/phpunit-coverage-badge@v1.2.1
         with:
