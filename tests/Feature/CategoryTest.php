@@ -35,7 +35,7 @@ it('can create a category', function () {
     $title = fake()->name();
     $postRequest = postJson($postEndpoint, [
         'title' => $title,
-        'parent_id' => $category['id'] . 'wrong_id',
+        'parent_id' => $category['id'].'wrong_id',
     ]);
 
     expect($postRequest->getStatusCode())->toBe(422);
@@ -64,8 +64,7 @@ it('can get categories with pagination', function () {
         ->per_page->toBe(15)
         ->prev_page_url->toBe(null)
         ->to->toBe(9)
-        ->total->toBe(9)
-    ;
+        ->total->toBe(9);
 });
 
 it('can get category', function () {
@@ -84,8 +83,7 @@ it('can get category', function () {
         ->and($getRequest->json())
         ->id->toBe($category->id)
         ->title->toBe($category->title)
-        ->parent_id->toBe($category->parent_id)
-    ;
+        ->parent_id->toBe($category->parent_id);
 });
 
 it('can update a category', function () {

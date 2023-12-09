@@ -10,13 +10,13 @@ use Spatie\LaravelData\Optional;
 class CategoryData extends Data
 {
     public function __construct(
-        public string|null $id,
+        public ?string $id,
         public string $title,
         #[Exists('categories', 'id')]
         public string|Optional|null $parent_id,
-        public Carbon|null $created_at,
-        public Carbon|null $updated_at,
-        public Carbon|null $deleted_at,
+        public ?Carbon $created_at,
+        public ?Carbon $updated_at,
+        public ?Carbon $deleted_at,
     ) {
     }
 
