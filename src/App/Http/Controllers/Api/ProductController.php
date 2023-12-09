@@ -10,7 +10,8 @@ use Spatie\LaravelData\PaginatedDataCollection;
 
 class ProductController extends Controller
 {
-    public function __construct(public Product $model) {
+    public function __construct(public Product $model)
+    {
         $this->middleware('auth:sanctum')->only(['store', 'update', 'destroy']);
     }
 

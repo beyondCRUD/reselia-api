@@ -10,7 +10,8 @@ use Spatie\LaravelData\PaginatedDataCollection;
 
 class CategoryController extends Controller
 {
-    public function __construct(public Category $model) {
+    public function __construct(public Category $model)
+    {
         $this->middleware('auth:sanctum')->only(['store', 'update', 'destroy']);
     }
 
