@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Domain\Products\Data\CategoryData;
-use Domain\Products\Models\Category;
+use Domain\Products\Data\ProductData;
+use Domain\Products\Models\Product;
 use Illuminate\Http\Response;
 use Spatie\LaravelData\PaginatedDataCollection;
 
-class CategoryController extends Controller
+class ProductController extends Controller
 {
-    public function __construct(public Category $model)
+    public function __construct(public Product $model)
     {
         $this->middleware('auth:sanctum')->only(['store', 'update', 'destroy']);
     }
@@ -18,11 +18,11 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return PaginatedDataCollection<array-key, CategoryData>
+     * @return PaginatedDataCollection<array-key, ProductData>
      */
     public function index()
     {
-        return CategoryData::collection(
+        return ProductData::collection(
             $this->model->query()->paginate()
         );
     }
@@ -30,29 +30,30 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CategoryData $data): CategoryData
+    public function store(ProductData $data): ProductData
     {
         $category = $this->model->query()->create(
             $data->toArray()
         );
 
-        return CategoryData::from($category);
+        return ProductData::from($category);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Category $category): CategoryData
+    public function show(Product $product): ProductData
     {
-        return CategoryData::from($category);
+        return ProductData::from($product);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(CategoryData $data, Category $category): Response
+    public function update(ProductData $data, Product $product): Response
     {
-        $category->update($data->only('title', 'parent_id')->toArray());
+        $attributes = $data->only('name', 'photo', 'model', 'price')->toArray();
+        $product->update($attributes);
 
         return response()->noContent();
     }
@@ -60,9 +61,9 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category): Response
+    public function destroy(Product $product): Response
     {
-        $category->delete();
+        $product->delete();
 
         return response()->noContent();
     }
