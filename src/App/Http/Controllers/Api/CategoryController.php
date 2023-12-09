@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Domain\Products\Actions\CreateCategoryAction;
 use Domain\Products\Data\CategoryData;
 use Domain\Products\Models\Category;
 use Illuminate\Http\Response;
@@ -47,11 +46,11 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(CategoryData $data, Category $category): CategoryData
+    public function update(CategoryData $data, Category $category): Response
     {
-        $category->update($data->toArray());
+        $category->update($data->only('title', 'parent_id')->toArray());
 
-        return CategoryData::from($category->fresh());
+        return response()->noContent();
     }
 
     /**

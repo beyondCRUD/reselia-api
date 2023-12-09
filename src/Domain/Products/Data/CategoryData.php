@@ -2,7 +2,7 @@
 
 namespace Domain\Products\Data;
 
-use Domain\Products\Models\Category;
+use Illuminate\Support\Carbon;
 use Spatie\LaravelData\Attributes\Validation\Exists;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
@@ -10,25 +10,29 @@ use Spatie\LaravelData\Optional;
 class CategoryData extends Data
 {
     public function __construct(
-        public string|Optional $id,
+        public string|null $id,
         public string $title,
         #[Exists('categories', 'id')]
         public string|Optional|null $parent_id,
+        public Carbon|null $created_at,
+        public Carbon|null $updated_at,
+        public Carbon|null $deleted_at,
     ) {
-    }
-
-    public static function fromModel(Category $category): self
-    {
-        return new self(
-            $category->id,
-            $category->title,
-            $category->parent_id,
-        );
     }
 
     /** @return array<mixed> */
     public function with(): array
     {
-        return ['endpoints' => []];
+        if ($this->id) {
+            return [
+                'endpoints' => [
+                    'show' => route('categories.show', $this->id),
+                    'update' => route('categories.update', $this->id),
+                    'delete' => route('categories.destroy', $this->id),
+                ],
+            ];
+        }
+
+        return [];
     }
 }

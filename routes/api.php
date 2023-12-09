@@ -20,9 +20,5 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'v1'], function () {
-    Route::get('categories', [CategoryController::class, 'index']);
-    Route::get('categories/{category}', [CategoryController::class, 'show']);
-    Route::post('categories', [CategoryController::class, 'store']);
-    Route::put('categories/{category}', [CategoryController::class, 'update']);
-    Route::delete('categories/{category}', [CategoryController::class, 'destroy']);
+    Route::resource('categories', CategoryController::class)->except('edit');
 });
