@@ -137,3 +137,38 @@ it('can delete a product', function () {
 
     expect($putRequest->getStatusCode())->toBe(204);
 });
+
+it('can sorting product', function (string $column) {
+    artisan('db:seed');
+
+    $product = Product::query()->orderBy($column, 'desc')->first();
+
+    $getRequest = getJson('api/v1/products?sort=-'.$column);
+
+    expect($getRequest->getStatusCode())
+        ->toBe(200)
+        ->and($getRequest->json())
+        ->toHaveKeys(['data', 'links', 'meta'])
+        ->and($getRequest->json('data.0.name'))
+        ->toBe($product->name);
+})->with(['name', 'model', 'photo', 'price']);
+
+it('can filtering product', function (string $column, string $value) {
+    artisan('db:seed');
+
+    $product = Product::query()->where($column, $value)->first();
+
+    $getRequest = getJson('api/v1/products?filter['.$column.']='.$value);
+
+    expect($getRequest->getStatusCode())
+        ->toBe(200)
+        ->and($getRequest->json())
+        ->toHaveKeys(['data', 'links', 'meta'])
+        ->and($getRequest->json('data.0.name'))
+        ->toBe($product->name);
+})->with([
+    ['column' => 'name', 'value' => 'Naik SB Steele'],
+    ['column' => 'model', 'value' => 'Jaket Wanita'],
+    ['column' => 'photo', 'value' => 'stub-jaket.jpg'],
+    ['column' => 'price', 'value' => '720000'],
+]);

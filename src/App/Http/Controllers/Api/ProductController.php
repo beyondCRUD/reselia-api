@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Domain\Products\Data\ProductData;
 use Domain\Products\Models\Product;
+use Domain\Products\Queries\ProductIndexQuery;
 use Illuminate\Http\Response;
 use Spatie\LaravelData\PaginatedDataCollection;
 
@@ -20,11 +21,9 @@ class ProductController extends Controller
      *
      * @return PaginatedDataCollection<array-key, ProductData>
      */
-    public function index()
+    public function index(ProductIndexQuery $query)
     {
-        return ProductData::collection(
-            $this->model->query()->paginate()
-        );
+        return ProductData::collection($query->paginate());
     }
 
     /**
