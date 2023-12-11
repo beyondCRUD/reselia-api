@@ -2,7 +2,7 @@
     "variable": [
         {
             "key": "base_url",
-            "value": "http:\/\/localhost:8000"
+            "value": "http://localhost:8000"
         },
         {
             "key": "token",
@@ -11,25 +11,25 @@
     ],
     "info": {
         "name": "2023_12_11_104247_laravel_collection.json",
-        "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "item": [
         {
-            "name": "api\/user",
+            "name": "api/user",
             "request": {
                 "method": "GET",
                 "header": [
                     {
                         "key": "Accept",
-                        "value": "application\/json"
+                        "value": "application/json"
                     },
                     {
                         "key": "Content-Type",
-                        "value": "application\/json"
+                        "value": "application/json"
                     }
                 ],
                 "url": {
-                    "raw": "{{base_url}}\/api\/user",
+                    "raw": "{{base_url}}/api/user",
                     "host": [
                         "{{base_url}}"
                     ],
@@ -42,21 +42,21 @@
             }
         },
         {
-            "name": "api\/v1\/categories",
+            "name": "api/v1/categories",
             "request": {
                 "method": "GET",
                 "header": [
                     {
                         "key": "Accept",
-                        "value": "application\/json"
+                        "value": "application/json"
                     },
                     {
                         "key": "Content-Type",
-                        "value": "application\/json"
+                        "value": "application/json"
                     }
                 ],
                 "url": {
-                    "raw": "{{base_url}}\/api\/v1\/categories",
+                    "raw": "{{base_url}}/api/v1/categories",
                     "host": [
                         "{{base_url}}"
                     ],
@@ -70,21 +70,21 @@
             }
         },
         {
-            "name": "api\/v1\/categories",
+            "name": "api/v1/categories",
             "request": {
                 "method": "POST",
                 "header": [
                     {
                         "key": "Accept",
-                        "value": "application\/json"
+                        "value": "application/json"
                     },
                     {
                         "key": "Content-Type",
-                        "value": "application\/json"
+                        "value": "application/json"
                     }
                 ],
                 "url": {
-                    "raw": "{{base_url}}\/api\/v1\/categories",
+                    "raw": "{{base_url}}/api/v1/categories",
                     "host": [
                         "{{base_url}}"
                     ],
@@ -98,21 +98,21 @@
             }
         },
         {
-            "name": "api\/v1\/categories\/{category}",
+            "name": "api/v1/categories/{category}",
             "request": {
                 "method": "GET",
                 "header": [
                     {
                         "key": "Accept",
-                        "value": "application\/json"
+                        "value": "application/json"
                     },
                     {
                         "key": "Content-Type",
-                        "value": "application\/json"
+                        "value": "application/json"
                     }
                 ],
                 "url": {
-                    "raw": "{{base_url}}\/api\/v1\/categories\/:category",
+                    "raw": "{{base_url}}/api/v1/categories/:category",
                     "host": [
                         "{{base_url}}"
                     ],
@@ -127,21 +127,21 @@
             }
         },
         {
-            "name": "api\/v1\/categories\/{category}",
+            "name": "api/v1/categories/{category}",
             "request": {
                 "method": "PUT",
                 "header": [
                     {
                         "key": "Accept",
-                        "value": "application\/json"
+                        "value": "application/json"
                     },
                     {
                         "key": "Content-Type",
-                        "value": "application\/json"
+                        "value": "application/json"
                     }
                 ],
                 "url": {
-                    "raw": "{{base_url}}\/api\/v1\/categories\/:category",
+                    "raw": "{{base_url}}/api/v1/categories/:category",
                     "host": [
                         "{{base_url}}"
                     ],
@@ -156,21 +156,21 @@
             }
         },
         {
-            "name": "api\/v1\/categories\/{category}",
+            "name": "api/v1/categories/{category}",
             "request": {
                 "method": "PATCH",
                 "header": [
                     {
                         "key": "Accept",
-                        "value": "application\/json"
+                        "value": "application/json"
                     },
                     {
                         "key": "Content-Type",
-                        "value": "application\/json"
+                        "value": "application/json"
                     }
                 ],
                 "url": {
-                    "raw": "{{base_url}}\/api\/v1\/categories\/:category",
+                    "raw": "{{base_url}}/api/v1/categories/:category",
                     "host": [
                         "{{base_url}}"
                     ],
@@ -185,21 +185,21 @@
             }
         },
         {
-            "name": "api\/v1\/categories\/{category}",
+            "name": "api/v1/categories/{category}",
             "request": {
                 "method": "DELETE",
                 "header": [
                     {
                         "key": "Accept",
-                        "value": "application\/json"
+                        "value": "application/json"
                     },
                     {
                         "key": "Content-Type",
-                        "value": "application\/json"
+                        "value": "application/json"
                     }
                 ],
                 "url": {
-                    "raw": "{{base_url}}\/api\/v1\/categories\/:category",
+                    "raw": "{{base_url}}/api/v1/categories/:category",
                     "host": [
                         "{{base_url}}"
                     ],
@@ -214,21 +214,21 @@
             }
         },
         {
-            "name": "api\/v1\/products",
+            "name": "api/v1/products",
             "request": {
                 "method": "GET",
                 "header": [
                     {
                         "key": "Accept",
-                        "value": "application\/json"
+                        "value": "application/json"
                     },
                     {
                         "key": "Content-Type",
-                        "value": "application\/json"
+                        "value": "application/json"
                     }
                 ],
                 "url": {
-                    "raw": "{{base_url}}\/api\/v1\/products",
+                    "raw": "{{base_url}}/api/v1/products",
                     "host": [
                         "{{base_url}}"
                     ],
@@ -242,21 +242,21 @@
             }
         },
         {
-            "name": "api\/v1\/products",
+            "name": "api/v1/products",
             "request": {
                 "method": "POST",
                 "header": [
                     {
                         "key": "Accept",
-                        "value": "application\/json"
+                        "value": "application/json"
                     },
                     {
                         "key": "Content-Type",
-                        "value": "application\/json"
+                        "value": "application/json"
                     }
                 ],
                 "url": {
-                    "raw": "{{base_url}}\/api\/v1\/products",
+                    "raw": "{{base_url}}/api/v1/products",
                     "host": [
                         "{{base_url}}"
                     ],
@@ -270,21 +270,21 @@
             }
         },
         {
-            "name": "api\/v1\/products\/{product}",
+            "name": "api/v1/products/{product}",
             "request": {
                 "method": "GET",
                 "header": [
                     {
                         "key": "Accept",
-                        "value": "application\/json"
+                        "value": "application/json"
                     },
                     {
                         "key": "Content-Type",
-                        "value": "application\/json"
+                        "value": "application/json"
                     }
                 ],
                 "url": {
-                    "raw": "{{base_url}}\/api\/v1\/products\/:product",
+                    "raw": "{{base_url}}/api/v1/products/:product",
                     "host": [
                         "{{base_url}}"
                     ],
@@ -299,21 +299,21 @@
             }
         },
         {
-            "name": "api\/v1\/products\/{product}",
+            "name": "api/v1/products/{product}",
             "request": {
                 "method": "PUT",
                 "header": [
                     {
                         "key": "Accept",
-                        "value": "application\/json"
+                        "value": "application/json"
                     },
                     {
                         "key": "Content-Type",
-                        "value": "application\/json"
+                        "value": "application/json"
                     }
                 ],
                 "url": {
-                    "raw": "{{base_url}}\/api\/v1\/products\/:product",
+                    "raw": "{{base_url}}/api/v1/products/:product",
                     "host": [
                         "{{base_url}}"
                     ],
@@ -328,21 +328,21 @@
             }
         },
         {
-            "name": "api\/v1\/products\/{product}",
+            "name": "api/v1/products/{product}",
             "request": {
                 "method": "PATCH",
                 "header": [
                     {
                         "key": "Accept",
-                        "value": "application\/json"
+                        "value": "application/json"
                     },
                     {
                         "key": "Content-Type",
-                        "value": "application\/json"
+                        "value": "application/json"
                     }
                 ],
                 "url": {
-                    "raw": "{{base_url}}\/api\/v1\/products\/:product",
+                    "raw": "{{base_url}}/api/v1/products/:product",
                     "host": [
                         "{{base_url}}"
                     ],
@@ -357,21 +357,21 @@
             }
         },
         {
-            "name": "api\/v1\/products\/{product}",
+            "name": "api/v1/products/{product}",
             "request": {
                 "method": "DELETE",
                 "header": [
                     {
                         "key": "Accept",
-                        "value": "application\/json"
+                        "value": "application/json"
                     },
                     {
                         "key": "Content-Type",
-                        "value": "application\/json"
+                        "value": "application/json"
                     }
                 ],
                 "url": {
-                    "raw": "{{base_url}}\/api\/v1\/products\/:product",
+                    "raw": "{{base_url}}/api/v1/products/:product",
                     "host": [
                         "{{base_url}}"
                     ],
