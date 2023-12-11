@@ -38,6 +38,208 @@
     },
     "item": [
         {
+            "name": "Auth",
+            "item": [
+                {
+                    "name": "sanctum/csrf-cookie",
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "exec": [
+                                    ""
+                                ],
+                                "type": "text/javascript"
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "pm.test(\"Status code is 204\", function () {",
+                                    "    pm.response.to.have.status(204);",
+                                    "});",
+                                    "pm.test(\"Response time is less than 200ms\", function () {",
+                                    "    pm.expect(pm.response.responseTime).to.be.below(200);",
+                                    "});",
+                                    "",
+                                    "// Mendapatkan cookie XSRF-TOKEN",
+                                    "var cookieValue = pm.cookies.get('XSRF-TOKEN');",
+                                    "",
+                                    "// Menyimpan nilai XSRF-TOKEN ke environment variable di Postman",
+                                    "pm.collectionVariables.set(\"XSRF_TOKEN\", cookieValue);"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/sanctum/csrf-cookie",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "sanctum",
+                                "csrf-cookie"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "login",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "pm.test(\"Status code is 204\", function () {",
+                                    "    pm.response.to.have.status(204);",
+                                    "});",
+                                    "pm.test(\"Response time is less than 200ms\", function () {",
+                                    "    pm.expect(pm.response.responseTime).to.be.below(200);",
+                                    "});",
+                                    "",
+                                    "// Mendapatkan cookie XSRF-TOKEN",
+                                    "var cookieValue = pm.cookies.get('laravel_session');",
+                                    "",
+                                    "// Menyimpan nilai XSRF-TOKEN ke environment variable di Postman",
+                                    "pm.collectionVariables.set(\"laravel_session\", cookieValue);"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        },
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "exec": [
+                                    ""
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "X-XSRF-TOKEN",
+                                "value": "{{XSRF_TOKEN}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "email",
+                                    "value": "{{email}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "password",
+                                    "value": "{{password}}",
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/login",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "login"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "logout",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "pm.test(\"Status code is 204\", function () {",
+                                    "    pm.response.to.have.status(204);",
+                                    "});",
+                                    "pm.test(\"Response time is less than 200ms\", function () {",
+                                    "    pm.expect(pm.response.responseTime).to.be.below(200);",
+                                    "});"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "X-XSRF-TOKEN",
+                                "value": "{{XSRF_TOKEN}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "email",
+                                    "value": "{{email}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "password",
+                                    "value": "{{password}}",
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/logout",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "logout"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
             "name": "api/user",
             "request": {
                 "method": "GET",
