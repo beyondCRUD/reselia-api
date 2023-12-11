@@ -15,6 +15,7 @@
         "spatie/laravel-query-builder": "^5.6"
     },
     "require-dev": {
+        "andreaselia/laravel-api-to-postman": "^1.15",
         "fakerphp/faker": "^1.9.1",
         "larastan/larastan": "^2.0",
         "laravel/pint": "^1.13",
