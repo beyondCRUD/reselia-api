@@ -375,7 +375,7 @@
                     }
                 ],
                 "url": {
-                    "raw": "{{base_url}}/api/v1/categories/:category",
+                    "raw": "{{base_url}}/api/v1/categories/{category}",
                     "host": [
                         "{{base_url}}"
                     ],
@@ -383,7 +383,7 @@
                         "api",
                         "v1",
                         "categories",
-                        ":category"
+                        "{{category}}"
                     ],
                     "variable": []
                 }
@@ -425,7 +425,7 @@
                     }
                 ],
                 "url": {
-                    "raw": "{{base_url}}/api/v1/categories/:category",
+                    "raw": "{{base_url}}/api/v1/categories/{category}",
                     "host": [
                         "{{base_url}}"
                     ],
@@ -433,7 +433,7 @@
                         "api",
                         "v1",
                         "categories",
-                        ":category"
+                        "{{category}}"
                     ],
                     "variable": []
                 }
@@ -472,10 +472,15 @@
                         "key": "Referer",
                         "value": "{{host}}",
                         "type": "text"
+                    },
+                    {
+                        "key": "X-XSRF-TOKEN",
+                        "value": "{{XSRF_TOKEN}}",
+                        "type": "text"
                     }
                 ],
                 "url": {
-                    "raw": "{{base_url}}/api/v1/categories/:category",
+                    "raw": "{{base_url}}/api/v1/categories/{category}",
                     "host": [
                         "{{base_url}}"
                     ],
@@ -483,7 +488,7 @@
                         "api",
                         "v1",
                         "categories",
-                        ":category"
+                        "{{category}}"
                     ],
                     "variable": []
                 }
@@ -625,7 +630,7 @@
                     }
                 ],
                 "url": {
-                    "raw": "{{base_url}}/api/v1/products/:product",
+                    "raw": "{{base_url}}/api/v1/products/{product}",
                     "host": [
                         "{{base_url}}"
                     ],
@@ -633,7 +638,7 @@
                         "api",
                         "v1",
                         "products",
-                        ":product"
+                        "{{product}}"
                     ],
                     "variable": []
                 }
@@ -675,7 +680,7 @@
                     }
                 ],
                 "url": {
-                    "raw": "{{base_url}}/api/v1/products/:product",
+                    "raw": "{{base_url}}/api/v1/products/{product}",
                     "host": [
                         "{{base_url}}"
                     ],
@@ -683,7 +688,7 @@
                         "api",
                         "v1",
                         "products",
-                        ":product"
+                        "{{product}}"
                     ],
                     "variable": []
                 }
@@ -722,10 +727,15 @@
                         "key": "Referer",
                         "value": "{{host}}",
                         "type": "text"
+                    },
+                    {
+                        "key": "X-XSRF-TOKEN",
+                        "value": "{{XSRF_TOKEN}}",
+                        "type": "text"
                     }
                 ],
                 "url": {
-                    "raw": "{{base_url}}/api/v1/products/:product",
+                    "raw": "{{base_url}}/api/v1/products/{product}",
                     "host": [
                         "{{base_url}}"
                     ],
@@ -733,7 +743,7 @@
                         "api",
                         "v1",
                         "products",
-                        ":product"
+                        "{{product}}"
                     ],
                     "variable": []
                 }
