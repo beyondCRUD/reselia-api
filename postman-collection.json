@@ -49,6 +49,11 @@
                     {
                         "key": "Content-Type",
                         "value": "application/json"
+                    },
+                    {
+                        "key": "Referer",
+                        "value": "{{host}}",
+                        "type": "text"
                     }
                 ],
                 "url": {
@@ -76,6 +81,11 @@
                     {
                         "key": "Content-Type",
                         "value": "application/json"
+                    },
+                    {
+                        "key": "Referer",
+                        "value": "{{host}}",
+                        "type": "text"
                     }
                 ],
                 "url": {
@@ -104,6 +114,11 @@
                     {
                         "key": "Content-Type",
                         "value": "application/json"
+                    },
+                    {
+                        "key": "Referer",
+                        "value": "{{host}}",
+                        "type": "text"
                     }
                 ],
                 "url": {
@@ -132,6 +147,11 @@
                     {
                         "key": "Content-Type",
                         "value": "application/json"
+                    },
+                    {
+                        "key": "Referer",
+                        "value": "{{host}}",
+                        "type": "text"
                     }
                 ],
                 "url": {
@@ -161,6 +181,11 @@
                     {
                         "key": "Content-Type",
                         "value": "application/json"
+                    },
+                    {
+                        "key": "Referer",
+                        "value": "{{host}}",
+                        "type": "text"
                     }
                 ],
                 "url": {
@@ -190,6 +215,11 @@
                     {
                         "key": "Content-Type",
                         "value": "application/json"
+                    },
+                    {
+                        "key": "Referer",
+                        "value": "{{host}}",
+                        "type": "text"
                     }
                 ],
                 "url": {
@@ -219,6 +249,11 @@
                     {
                         "key": "Content-Type",
                         "value": "application/json"
+                    },
+                    {
+                        "key": "Referer",
+                        "value": "{{host}}",
+                        "type": "text"
                     }
                 ],
                 "url": {
@@ -248,6 +283,11 @@
                     {
                         "key": "Content-Type",
                         "value": "application/json"
+                    },
+                    {
+                        "key": "Referer",
+                        "value": "{{host}}",
+                        "type": "text"
                     }
                 ],
                 "url": {
@@ -276,6 +316,11 @@
                     {
                         "key": "Content-Type",
                         "value": "application/json"
+                    },
+                    {
+                        "key": "Referer",
+                        "value": "{{host}}",
+                        "type": "text"
                     }
                 ],
                 "url": {
@@ -304,6 +349,11 @@
                     {
                         "key": "Content-Type",
                         "value": "application/json"
+                    },
+                    {
+                        "key": "Referer",
+                        "value": "{{host}}",
+                        "type": "text"
                     }
                 ],
                 "url": {
@@ -333,6 +383,11 @@
                     {
                         "key": "Content-Type",
                         "value": "application/json"
+                    },
+                    {
+                        "key": "Referer",
+                        "value": "{{host}}",
+                        "type": "text"
                     }
                 ],
                 "url": {
@@ -362,6 +417,11 @@
                     {
                         "key": "Content-Type",
                         "value": "application/json"
+                    },
+                    {
+                        "key": "Referer",
+                        "value": "{{host}}",
+                        "type": "text"
                     }
                 ],
                 "url": {
@@ -391,6 +451,11 @@
                     {
                         "key": "Content-Type",
                         "value": "application/json"
+                    },
+                    {
+                        "key": "Referer",
+                        "value": "{{host}}",
+                        "type": "text"
                     }
                 ],
                 "url": {
