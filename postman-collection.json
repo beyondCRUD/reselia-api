@@ -1,12 +1,35 @@
 {
     "variable": [
         {
-            "key": "base_url",
-            "value": "http://localhost:8000"
+            "key": "host",
+            "value": "reselia-api.test",
+            "type": "string"
         },
         {
-            "key": "token",
-            "value": "123456789"
+            "key": "base_url",
+            "value": "https://reselia-api.test"
+        },
+        {
+            "key": "email",
+            "value": "prosacco.glenna@example.com",
+            "type": "string"
+        },
+        {
+            "key": "password",
+            "value": "password",
+            "type": "string"
+        },
+        {
+            "key": "XSRF_TOKEN",
+            "value": ""
+        },
+        {
+            "key": "category",
+            "value": ""
+        },
+        {
+            "key": "product",
+            "value": ""
         }
     ],
     "info": {
