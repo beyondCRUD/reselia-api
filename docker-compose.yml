@@ -11,8 +11,8 @@ services:
       MYSQL_PASSWORD: '${DB_PASSWORD}'
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
     volumes:
-      - './storage/app/mariadb:/var/lib/mysql'
-      - './database/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
+      - './api/storage/app/mariadb:/var/lib/mysql'
+      - './api/database/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
     networks:
       - reselia-api
     healthcheck:
