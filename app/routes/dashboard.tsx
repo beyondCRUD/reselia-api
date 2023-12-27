@@ -1,15 +1,16 @@
-import type { MetaFunction } from '@remix-run/node'
+import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import logoAssetUrl from '~/assets/logo.svg'
-import { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Disclosure } from '@headlessui/react'
+import {
+  ArrowLeftStartOnRectangleIcon,
+  Bars3Icon,
+  BellIcon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline'
+import { authCookie } from '~/services/auth'
+import { useLoaderData } from '@remix-run/react'
+import { userEntity } from './signin/login'
 
-const user = {
-  name: 'Tom Cook',
-  email: 'tom@example.com',
-  imageUrl:
-    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-}
 const navigation = [
   { name: 'Dashboard', href: '#', current: true },
   { name: 'Team', href: '#', current: false },
@@ -17,10 +18,13 @@ const navigation = [
   { name: 'Calendar', href: '#', current: false },
   { name: 'Reports', href: '#', current: false },
 ]
-const userNavigation = [
+const userNavigation: Array<{
+  name: string
+  href: string
+}> = [
   { name: 'Your Profile', href: '#' },
   { name: 'Settings', href: '#' },
-  { name: 'Sign out', href: '#' },
+  { name: 'Logout', href: '#' },
 ]
 
 function classNames(...classes: any) {
@@ -31,7 +35,16 @@ export const meta: MetaFunction = () => {
   return [{ title: 'Dashboard' }]
 }
 
+export async function loader({ request }: LoaderFunctionArgs) {
+  let cookieString = request.headers.get('Cookie'),
+    user = (await authCookie.parse(cookieString)) as userEntity
+
+  return { user }
+}
+
 export default function Dashboard() {
+  let { user } = useLoaderData<typeof loader>()
+
   return (
     <>
       <div className="min-h-full">
@@ -70,54 +83,18 @@ export default function Dashboard() {
                   </div>
                   <div className="hidden md:block">
                     <div className="flex items-center ml-4 md:ml-6">
-                      <button
-                        type="button"
-                        className="p-1 text-gray-400 bg-gray-800 rounded-full hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                      >
-                        <span className="sr-only">View notifications</span>
-                        <BellIcon className="w-6 h-6" aria-hidden="true" />
-                      </button>
-
-                      {/* Profile dropdown */}
-                      <Menu as="div" className="relative ml-3">
-                        <div>
-                          <Menu.Button className="flex items-center max-w-xs text-sm text-white bg-gray-800 rounded-full focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                            <span className="sr-only">Open user menu</span>
-                            <img
-                              className="w-8 h-8 rounded-full"
-                              src={user.imageUrl}
-                              alt=""
-                            />
-                          </Menu.Button>
-                        </div>
-                        <Transition
-                          as={Fragment}
-                          enter="transition ease-out duration-100"
-                          enterFrom="transform opacity-0 scale-95"
-                          enterTo="transform opacity-100 scale-100"
-                          leave="transition ease-in duration-75"
-                          leaveFrom="transform opacity-100 scale-100"
-                          leaveTo="transform opacity-0 scale-95"
+                      <form method="post" action="/logout">
+                        <button
+                          type="submit"
+                          className="ml-3 p-1 text-gray-400 bg-gray-800 rounded-full hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                         >
-                          <Menu.Items className="absolute right-0 z-10 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                            {userNavigation.map((item) => (
-                              <Menu.Item key={item.name}>
-                                {({ active }) => (
-                                  <a
-                                    href={item.href}
-                                    className={classNames(
-                                      active ? 'bg-gray-100' : '',
-                                      'block px-4 py-2 text-sm text-gray-700'
-                                    )}
-                                  >
-                                    {item.name}
-                                  </a>
-                                )}
-                              </Menu.Item>
-                            ))}
-                          </Menu.Items>
-                        </Transition>
-                      </Menu>
+                          <span className="sr-only">Logout</span>
+                          <ArrowLeftStartOnRectangleIcon
+                            className="size-7"
+                            aria-hidden="true"
+                          />
+                        </button>
+                      </form>
                     </div>
                   </div>
                   <div className="flex -mr-2 md:hidden">
@@ -164,16 +141,16 @@ export default function Dashboard() {
                     <div className="flex-shrink-0">
                       <img
                         className="w-10 h-10 rounded-full"
-                        src={user.imageUrl}
+                        src={user.data.imageUrl}
                         alt=""
                       />
                     </div>
                     <div className="ml-3">
                       <div className="text-base font-medium text-white">
-                        {user.name}
+                        {user.data.name}
                       </div>
                       <div className="text-sm font-medium text-gray-400">
-                        {user.email}
+                        {user.data.email}
                       </div>
                     </div>
                     <button
@@ -185,16 +162,14 @@ export default function Dashboard() {
                     </button>
                   </div>
                   <div className="px-2 mt-3 space-y-1">
-                    {userNavigation.map((item) => (
-                      <Disclosure.Button
-                        key={item.name}
-                        as="a"
-                        href={item.href}
+                    <form action="/logout" method="post">
+                      <button
+                        type="submit"
                         className="block px-3 py-2 text-base font-medium text-gray-400 rounded-md hover:bg-gray-700 hover:text-white"
                       >
-                        {item.name}
-                      </Disclosure.Button>
-                    ))}
+                        Logout
+                      </button>
+                    </form>
                   </div>
                 </div>
               </Disclosure.Panel>

@@ -1,7 +1,8 @@
-import type { ActionFunctionArgs, MetaFunction } from '@remix-run/node'
-import { Form, Link } from '@remix-run/react'
+import { type ActionFunctionArgs, type MetaFunction } from '@remix-run/node'
+import { Form, Link, redirect } from '@remix-run/react'
 import logoAssetUrl from '~/assets/logo.svg'
 import { login } from './login'
+import { authCookie } from '~/services/auth'
 
 export const meta: MetaFunction = () => {
   return [{ title: 'Sign In - Stock SaaS' }]
@@ -11,9 +12,11 @@ export async function action({ request }: ActionFunctionArgs) {
   let formData = await request.formData(),
     user = await login(formData, request)
 
-  console.log(user)
-
-  return null
+  return redirect('/dashboard', {
+    headers: {
+      'Set-Cookie': await authCookie.serialize(user),
+    },
+  })
 }
 
 export default function Login() {

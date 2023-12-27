@@ -5,10 +5,7 @@ import larafetch, {
 } from '~/services/larafetch'
 import submitRequest from '~/services/submitRequest'
 
-export async function login(
-  formData: FormData,
-  request: Request
-): Promise<{
+export type userEntity = {
   data: {
     id: number
     name: string
@@ -16,10 +13,16 @@ export async function login(
     email_verified_at: string
     created_at: string
     updated_at: string
+    imageUrl: string
   }
   Cookie: string
   'X-XSRF-TOKEN': string
-}> {
+}
+
+export async function login(
+  formData: FormData,
+  request: Request
+): Promise<userEntity> {
   let loginResponse = await submitRequest(
       larafetch('/login', { method: 'post', body: formData }, request)
     ),
@@ -37,7 +40,7 @@ export async function login(
     ].join(';')
   }
 
-  request.headers.set('cookie', Cookie)
+  request.headers.set('Cookie', Cookie)
   request.headers.set(CSRF_HEADER, token)
 
   let { data } = await submitRequest(
@@ -63,9 +66,12 @@ export async function login(
         email_verified_at: String(data?.email_verified_at),
         created_at: String(data?.created_at),
         updated_at: String(data?.updated_at),
+        imageUrl:
+          'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
       },
     }
   }
 
+  // TODO: handle invalid credentials
   throw new Error("Couldn't get user data")
 }

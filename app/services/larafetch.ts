@@ -1,4 +1,6 @@
 import { FetchOptions } from 'ofetch'
+import { authCookie } from './auth'
+import { userEntity } from '~/routes/signin/login'
 
 export const CSRF_COOKIE = 'XSRF-TOKEN',
   CSRF_HEADER = 'X-XSRF-TOKEN'
@@ -29,13 +31,11 @@ export default async function larafetch<T, R extends ResponseType = 'json'>(
 
   let body = undefined,
     method = options?.method?.toLowerCase() || 'get',
-    token = request?.headers.get(CSRF_HEADER) || '',
-    cookie = request?.headers.get('cookie') || '' // REVIEW: make sure this is correct for concurrent requests
+    cookie = request?.headers.get('Cookie') || null,
+    isMutation = ['post', 'put', 'patch', 'delete'].includes(method),
+    token
 
-  if (
-    !token
-    // || ['post', 'delete', 'put', 'patch'].includes(method)
-  ) {
+  if (!cookie && isMutation) {
     let csrf = await initCsrf(),
       laraCookies = await getLaravelCookies(
         String(csrf.headers.get('set-cookie'))
@@ -46,6 +46,11 @@ export default async function larafetch<T, R extends ResponseType = 'json'>(
       `laravel_session=${laraCookies.laravelSession}`,
       `${CSRF_COOKIE}=${token}`,
     ].join(';')
+  } else if (cookie && isMutation) {
+    let user = (await authCookie.parse(cookie)) as userEntity
+
+    token = user['X-XSRF-TOKEN']
+    cookie = user.Cookie
   }
 
   let headers: any = {
