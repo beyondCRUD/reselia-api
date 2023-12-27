@@ -1,5 +1,20 @@
+import type { ActionFunctionArgs, MetaFunction } from '@remix-run/node'
 import { Form, Link } from '@remix-run/react'
 import logoAssetUrl from '~/assets/logo.svg'
+import { login } from './login'
+
+export const meta: MetaFunction = () => {
+  return [{ title: 'Sign In - Stock SaaS' }]
+}
+
+export async function action({ request }: ActionFunctionArgs) {
+  let formData = await request.formData(),
+    user = await login(formData, request)
+
+  console.log(user)
+
+  return null
+}
 
 export default function Login() {
   return (
@@ -12,7 +27,7 @@ export default function Login() {
             alt="Stock SaaS"
           />
           <h2 className="mt-10 text-2xl font-bold leading-9 tracking-tight text-center text-gray-900">
-            Sign in
+            Login to your account
           </h2>
         </div>
 

@@ -1,0 +1,38 @@
+services:
+  php:
+    image: 'ramageek/image:beta-php8.3-laravel'
+    ports:
+      - '${API_PORT:-8000}:80'
+    volumes:
+      - './api:/var/www/html'
+    networks:
+      - reselia
+  mailpit:
+    image: 'axllent/mailpit:latest'
+    ports:
+      - '${FORWARD_MAILPIT_PORT:-1025}:1025'
+      - '${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025'
+    networks:
+      - reselia
+  mariadb:
+    image: 'mariadb:lts'
+    ports:
+      - '${FORWARD_DB_PORT:-3306}:3306'
+    environment:
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: '${DB_DATABASE}'
+      MYSQL_USER: '${DB_USERNAME}'
+      MYSQL_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    volumes:
+      - './api/storage/app/mariadb:/var/lib/mysql'
+      - './api/database/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
+    networks:
+      - reselia
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-p']
+      retries: 3
+      timeout: 5s
+networks:
+  reselia:
+    driver: bridge
