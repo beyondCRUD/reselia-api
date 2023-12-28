@@ -8,7 +8,7 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { authCookie } from '~/services/auth'
-import { useLoaderData } from '@remix-run/react'
+import { redirect, useLoaderData } from '@remix-run/react'
 import { userEntity } from './signin/login'
 
 const navigation = [
@@ -38,6 +38,10 @@ export const meta: MetaFunction = () => {
 export async function loader({ request }: LoaderFunctionArgs) {
   let cookieString = request.headers.get('Cookie'),
     user = (await authCookie.parse(cookieString)) as userEntity
+
+  if (!user) {
+    return redirect('/signin')
+  }
 
   return { user }
 }

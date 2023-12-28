@@ -43,35 +43,26 @@ export async function login(
   request.headers.set('Cookie', Cookie)
   request.headers.set(CSRF_HEADER, token)
 
-  let { data } = await submitRequest(
+  let { data, errors } = (await submitRequest(
     larafetch('/api/user', { method: 'get' }, request)
-  )
+  )) as { data: userEntity['data']; errors: any | null }
 
-  if (
-    data instanceof Object &&
-    'id' in data &&
-    'name' in data &&
-    'email' in data &&
-    'email_verified_at' in data &&
-    'created_at' in data &&
-    'updated_at' in data
-  ) {
-    return {
-      Cookie,
-      [CSRF_HEADER]: token,
-      data: {
-        id: Number(data?.id),
-        name: String(data?.name),
-        email: String(data?.email),
-        email_verified_at: String(data?.email_verified_at),
-        created_at: String(data?.created_at),
-        updated_at: String(data?.updated_at),
-        imageUrl:
-          'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      },
-    }
+  if (errors) {
+    throw new Error("Couldn't get user data")
   }
 
-  // TODO: handle invalid credentials
-  throw new Error("Couldn't get user data")
+  return {
+    Cookie,
+    [CSRF_HEADER]: token,
+    data: {
+      id: Number(data?.id),
+      name: String(data?.name),
+      email: String(data?.email),
+      email_verified_at: String(data?.email_verified_at),
+      created_at: String(data?.created_at),
+      updated_at: String(data?.updated_at),
+      imageUrl:
+        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    },
+  }
 }

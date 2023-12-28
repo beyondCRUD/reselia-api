@@ -1,7 +1,11 @@
-import { type ActionFunctionArgs, type MetaFunction } from '@remix-run/node'
+import {
+  LoaderFunctionArgs,
+  type ActionFunctionArgs,
+  type MetaFunction,
+} from '@remix-run/node'
 import { Form, Link, redirect } from '@remix-run/react'
 import logoAssetUrl from '~/assets/logo.svg'
-import { login } from './login'
+import { login, userEntity } from './login'
 import { authCookie } from '~/services/auth'
 
 export const meta: MetaFunction = () => {
@@ -17,6 +21,17 @@ export async function action({ request }: ActionFunctionArgs) {
       'Set-Cookie': await authCookie.serialize(user),
     },
   })
+}
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  let cookieString = request.headers.get('Cookie'),
+    user = (await authCookie.parse(cookieString)) as userEntity
+
+  if (user) {
+    return redirect('/dashboard')
+  }
+
+  return {}
 }
 
 export default function Login() {
