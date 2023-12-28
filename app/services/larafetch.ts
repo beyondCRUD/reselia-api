@@ -29,48 +29,38 @@ export default async function larafetch<T, R extends ResponseType = 'json'>(
 ) {
   const { API_URL, APP_URL } = process.env
 
+  console.log(API_URL)
+
   let body = undefined,
     method = options?.method?.toLowerCase() || 'get',
-    cookie = request?.headers.get('Cookie') || null,
+    Cookie = request?.headers.get('Cookie') || null,
     token = request?.headers.get(CSRF_HEADER) || null,
     isMutation = ['post', 'put', 'patch', 'delete'].includes(method)
 
-  if (isMutation && !cookie) {
+  if (Cookie) {
+    let user = (await authCookie.parse(Cookie)) as userEntity
+
+    token = user['X-XSRF-TOKEN']
+    Cookie = user.Cookie
+  }
+
+  if (isMutation && !Cookie) {
     let csrf = await initCsrf(),
       laraCookies = await getLaravelCookies(
         String(csrf.headers.get('set-cookie'))
       )
 
     token = laraCookies.XSRFToken
-    cookie = [
+    Cookie = [
       `laravel_session=${laraCookies.laravelSession}`,
       `${CSRF_COOKIE}=${token}`,
     ].join(';')
   }
 
-  // if (cookie === null && isMutation) {
-  //   let csrf = await initCsrf(),
-  //     laraCookies = await getLaravelCookies(
-  //       String(csrf.headers.get('set-cookie'))
-  //     )
-
-  //   token = laraCookies.XSRFToken
-  //   cookie = [
-  //     `laravel_session=${laraCookies.laravelSession}`,
-  //     `${CSRF_COOKIE}=${token}`,
-  //   ].join(';')
-  // } else if (cookie !== null && isMutation) {
-  //   let user = (await authCookie.parse(cookie)) as userEntity
-
-  //   console.log(user)
-  //   token = user['X-XSRF-TOKEN']
-  //   cookie = user.Cookie
-  // }
-
   let headers: any = {
     ...(token && {
+      Cookie,
       [CSRF_HEADER]: token,
-      Cookie: cookie,
     }),
     accept: 'application/json',
     Referer: APP_URL,

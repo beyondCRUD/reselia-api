@@ -1,3 +1,4 @@
+import { authCookie } from '~/services/auth'
 import larafetch, {
   CSRF_COOKIE,
   CSRF_HEADER,
@@ -40,8 +41,13 @@ export async function login(
     ].join(';')
   }
 
-  request.headers.set('Cookie', Cookie)
-  request.headers.set(CSRF_HEADER, token)
+  request.headers.set(
+    'Cookie',
+    await authCookie.serialize({
+      Cookie,
+      [CSRF_HEADER]: token,
+    })
+  )
 
   let { data, errors } = (await submitRequest(
     larafetch('/api/user', { method: 'get' }, request)
