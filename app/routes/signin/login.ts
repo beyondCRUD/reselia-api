@@ -6,16 +6,18 @@ import larafetch, {
 } from '~/services/larafetch'
 import submitRequest from '~/services/submitRequest'
 
+export type userData = {
+  id: number
+  name: string
+  email: string
+  email_verified_at: string
+  created_at: string
+  updated_at: string
+  imageUrl: string
+}
+
 export type userEntity = {
-  data: {
-    id: number
-    name: string
-    email: string
-    email_verified_at: string
-    created_at: string
-    updated_at: string
-    imageUrl: string
-  }
+  data: userData
   Cookie: string
   'X-XSRF-TOKEN': string
 }

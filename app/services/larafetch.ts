@@ -1,4 +1,3 @@
-import { FetchOptions } from 'ofetch'
 import { authCookie } from './auth'
 import { userEntity } from '~/routes/signin/login'
 
@@ -13,29 +12,25 @@ interface ResponseMap {
 
 type ResponseType = keyof ResponseMap | 'json'
 
-type LarafetchOptions<R extends ResponseType> = FetchOptions<R> & {
-  redirectIfNotAuthenticated?: boolean
-  redirectIfNotVerified?: boolean
+type LarafetchOptions<R extends ResponseType> = {
+  method?: string
+  body?: FormData | Record<string, any>
 }
 
 export default async function larafetch<T, R extends ResponseType = 'json'>(
   path: RequestInfo,
-  {
-    redirectIfNotAuthenticated = true,
-    redirectIfNotVerified = true,
-    ...options
-  }: LarafetchOptions<R> = {},
+  { ...options }: LarafetchOptions<R> = {},
   request?: Request
 ) {
   const { API_URL, APP_URL } = process.env
-
-  console.log(API_URL)
 
   let body = undefined,
     method = options?.method?.toLowerCase() || 'get',
     Cookie = request?.headers.get('Cookie') || null,
     token = request?.headers.get(CSRF_HEADER) || null,
     isMutation = ['post', 'put', 'patch', 'delete'].includes(method)
+
+  method = method.toUpperCase()
 
   if (Cookie) {
     let user = (await authCookie.parse(Cookie)) as userEntity
@@ -77,7 +72,7 @@ export default async function larafetch<T, R extends ResponseType = 'json'>(
   try {
     return await fetch(`${API_URL}${path}`, {
       headers,
-      method: method.toUpperCase(),
+      method,
       body,
     })
   } catch (error) {
@@ -85,6 +80,11 @@ export default async function larafetch<T, R extends ResponseType = 'json'>(
   }
 }
 
+/**
+ * Initializes the CSRF token by making a GET request to the specified API URL.
+ *
+ * @returns A Promise that resolves to the response of the CSRF cookie request.
+ */
 async function initCsrf(): Promise<Response> {
   const { API_URL } = process.env
 
@@ -93,6 +93,12 @@ async function initCsrf(): Promise<Response> {
   })
 }
 
+/**
+ * Retrieves the Laravel cookies from the "Set-Cookie" header string and returns them as an object.
+ *
+ * @param setCookie - The "Set-Cookie" header string containing the cookies.
+ * @returns A Promise that resolves to an object containing the XSRFToken and laravelSession cookies.
+ */
 export async function getLaravelCookies(setCookie: string): Promise<{
   XSRFToken: string
   laravelSession: string
@@ -117,6 +123,13 @@ export async function getLaravelCookies(setCookie: string): Promise<{
   }
 }
 
+/**
+ * Retrieves the value of a specific cookie from a given cookie string.
+ *
+ * @param name - The name of the cookie to retrieve.
+ * @param cookieString - The string containing the cookies.
+ * @returns A Promise that resolves to the value of the cookie.
+ */
 export async function getCookie(
   name: string,
   cookieString: string
@@ -129,13 +142,3 @@ export async function getCookie(
 
   return match ? decodeURIComponent(match[3]) : ''
 }
-
-// export async function getCookieLaravelSession(
-//   cookieString: string
-// ): Promise<string> {
-//   let match = cookieString.match(
-//     new RegExp('(^|;\\s*)(laravel_session)=([^;]*)')
-//   )
-
-//   return match ? decodeURIComponent(match[3]) : ''
-// }

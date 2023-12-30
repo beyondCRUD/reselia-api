@@ -1,43 +1,56 @@
-export type ValidationErrors = Record<string, string[]>
+type ValidationErrors = Record<string, string[]>
 
+/**
+ * Submits a request and handles the response.
+ *
+ * @param fetchable - A promise that represents the request to be made.
+ * @param onSuccess - Optional callback function to be called on successful response.
+ * @param onValidationError - Optional callback function to be called when there are validation errors in the response.
+ * @returns A promise that resolves to an object containing the response data and any validation errors.
+ */
 export default async function submitRequest<T>(
   fetchable: Promise<T>,
-  onSuccess?: (data?: T) => any,
+  onSuccess?: (data?: T | Response) => any,
   onValidationError?: (errors: ValidationErrors) => any
-): Promise<{ data: T | object | null; errors: ValidationErrors | null }> {
+): Promise<{
+  data: T | object | null | Response
+  errors: ValidationErrors | null
+}> {
   try {
-    const data = await fetchable
+    let response = (await fetchable) as Response,
+      { status, statusText } = response,
+      data = null,
+      errors = null
 
-    if (data instanceof Response && data.status === 422) {
-      const { errors } = await data.json()
+    if (status === 500) {
+      throw new Error(await response.json())
+    }
+
+    if (status === 401) {
+      throw new Error(statusText)
+    }
+
+    if (status === 422) {
+      let json = await response.json()
+
+      data = null
+      errors = json.errors
+
       await onValidationError?.(errors)
-
-      return { data: null, errors }
     }
 
-    if (data instanceof Response && data.status === 500) {
-      const response = await data.json()
-
-      throw new Error(response.message)
+    if (status === 200) {
+      data = await response.json()
     }
 
-    if (data instanceof Response && data.status === 200) {
-      const response = await data.json()
-
-      return { data: response, errors: null }
+    if (status === 204) {
+      data = response
     }
 
-    await onSuccess?.(data)
+    await onSuccess?.(response)
 
-    return { data, errors: null }
+    return { data, errors }
   } catch (error) {
-    if (error instanceof Response) {
-      const { errors } = await error.json()
-      await onValidationError?.(errors)
-
-      return { data: null, errors }
-    }
-
     throw error
   }
 }

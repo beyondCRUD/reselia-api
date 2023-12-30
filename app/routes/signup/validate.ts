@@ -1,4 +1,4 @@
-type fields = {
+export type fields = {
   name?: string
   email?: string
   password?: string
