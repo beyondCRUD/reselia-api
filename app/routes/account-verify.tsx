@@ -21,15 +21,22 @@ export default function AccountVerify() {
           </h1>
         </div>
 
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <p className="mt-10 text-sm text-center text-gray-500">
-            <Link
-              to="/"
+        <div className="text-center">
+          <p className="mt-1 text-sm text-gray-500">
+            Your account is inactive. Please check your email for a verification
+            link.
+          </p>
+        </div>
+
+        <div className="sm:mx-auto sm:w-full sm:max-w-sm text-center mt-4">
+          <form action="/logout" method="post">
+            <button
+              type="submit"
               className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
             >
               Logout
-            </Link>
-          </p>
+            </button>
+          </form>
         </div>
       </div>
     </>

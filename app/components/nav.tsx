@@ -4,6 +4,7 @@ import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { classNames, navigation, userNavigation } from '~/utils'
 import { userEntity } from '~/routes/signin/login'
 import logoAssetUrl from '~/assets/logo.svg'
+import { NavLink } from '@remix-run/react'
 
 export default function Nav({ userEntity }: { userEntity: userEntity }) {
   let user = userEntity.data
@@ -19,25 +20,27 @@ export default function Nav({ userEntity }: { userEntity: userEntity }) {
                   <img
                     className="h-8 w-8"
                     src={logoAssetUrl}
-                    alt="Your Company"
+                    alt="Stock SaaS"
                   />
                 </div>
                 <div className="hidden md:block">
                   <div className="ml-10 flex items-baseline space-x-4">
                     {navigation.map((item) => (
-                      <a
+                      <NavLink
                         key={item.name}
-                        href={item.href}
-                        className={classNames(
-                          item.current
-                            ? 'bg-indigo-700 text-white'
-                            : 'text-white hover:bg-indigo-500 hover:bg-opacity-75',
-                          'rounded-md px-3 py-2 text-sm font-medium'
-                        )}
-                        aria-current={item.current ? 'page' : undefined}
+                        className={({ isActive }) =>
+                          classNames(
+                            isActive
+                              ? 'bg-indigo-700 text-white'
+                              : 'text-white hover:bg-indigo-500 hover:bg-opacity-75',
+                            'rounded-md px-3 py-2 text-sm font-medium'
+                          )
+                        }
+                        to={item.href}
+                        end
                       >
                         {item.name}
-                      </a>
+                      </NavLink>
                     ))}
                   </div>
                 </div>
@@ -82,7 +85,7 @@ export default function Nav({ userEntity }: { userEntity: userEntity }) {
                                   <form action="/logout" method="post">
                                     <button
                                       type="submit"
-                                      className="block px-4 py-2 text-sm text-gray-700"
+                                      className="block px-4 py-2 text-sm text-gray-700 w-full text-left hover:bg-gray-100"
                                     >
                                       {item.name}
                                     </button>
@@ -92,7 +95,7 @@ export default function Nav({ userEntity }: { userEntity: userEntity }) {
                                     href={item.href}
                                     className={classNames(
                                       active ? 'bg-gray-100' : '',
-                                      'block px-4 py-2 text-sm text-gray-700'
+                                      'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
                                     )}
                                   >
                                     {item.name}

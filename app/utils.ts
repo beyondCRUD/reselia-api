@@ -1,10 +1,9 @@
 export const navigation: {
   name: string
   href: string
-  current: boolean
 }[] = [
-  { name: 'Dashboard', href: '#', current: true },
-  { name: 'Products', href: '#', current: false },
+  { name: 'Admin', href: '/admin' },
+  { name: 'Users', href: '/admin/users' },
 ]
 
 export const userNavigation: {

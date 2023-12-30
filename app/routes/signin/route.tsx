@@ -16,7 +16,7 @@ export async function action({ request }: ActionFunctionArgs) {
   let formData = await request.formData(),
     user = await login(formData, request)
 
-  return redirect('/dashboard', {
+  return redirect('/admin', {
     headers: {
       'Set-Cookie': await authCookie.serialize(user),
     },
@@ -28,7 +28,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     user = (await authCookie.parse(cookieString)) as userEntity
 
   if (user) {
-    return redirect('/dashboard')
+    return redirect('/admin/dashboard')
   }
 
   return {}

@@ -1,8 +1,9 @@
 import { LoaderFunctionArgs, json, redirect } from '@remix-run/node'
-import { authCookie } from '~/services/auth'
-import { userEntity } from './signin/login'
-import { useLoaderData } from '@remix-run/react'
+import { Outlet, useLoaderData } from '@remix-run/react'
 import Nav from '~/components/nav'
+import Breadcrumbs from '~/components/breadcrumbs'
+import { authCookie } from '~/services/auth'
+import { userEntity } from '../signin/login'
 
 export async function loader({ request }: LoaderFunctionArgs) {
   let cookieString = request.headers.get('Cookie'),
@@ -15,26 +16,19 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return json({ user: userEntityData })
 }
 
-export default function Dashboard() {
+export default function AppAdmin() {
   let { user } = useLoaderData<typeof loader>()
 
   return (
-    <>
+    <div className="min-h-full">
       <Nav userEntity={user} />
-
-      <header className="bg-white shadow-sm">
-        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-          <h1 className="text-lg font-semibold leading-6 text-gray-900">
-            Dashboard
-          </h1>
-        </div>
-      </header>
+      <Breadcrumbs />
 
       <main>
         <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-          {/* Your content */}
+          <Outlet />
         </div>
       </main>
-    </>
+    </div>
   )
 }

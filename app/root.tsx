@@ -25,9 +25,7 @@ export default function App() {
         <Links />
       </head>
       <body className="h-full">
-        <div className="min-h-full">
-          <Outlet />
-        </div>
+        <Outlet />
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
