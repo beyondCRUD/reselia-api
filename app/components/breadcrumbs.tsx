@@ -3,21 +3,19 @@ import { Link, useLocation } from '@remix-run/react'
 import { breadcrumbs } from '~/utils'
 
 function convertPathname(str: string) {
-  const lastIndex = str.lastIndexOf('/')
+  if (str.split('/').length === 5) {
+    let lastIndex = str.lastIndexOf('/')
 
-  if (lastIndex !== -1) {
     return str.substring(0, lastIndex)
   }
 
-  return '/admin'
+  return str
 }
 
 export default function Breadcrumbs() {
   let { pathname } = useLocation(),
     key = convertPathname(pathname),
     pages = breadcrumbs[key]
-
-  console.log(pathname)
 
   return (
     <header className="shadow-sm">

@@ -4,24 +4,16 @@ import { userEntity } from '~/routes/signin/login'
 export const CSRF_COOKIE = 'XSRF-TOKEN',
   CSRF_HEADER = 'X-XSRF-TOKEN'
 
-interface ResponseMap {
-  blob: Blob
-  text: string
-  arrayBuffer: ArrayBuffer
-}
-
-type ResponseType = keyof ResponseMap | 'json'
-
-type LarafetchOptions<R extends ResponseType> = {
+type LarafetchOptions = {
   method?: string
   body?: FormData | Record<string, any>
 }
 
-export default async function larafetch<T, R extends ResponseType = 'json'>(
+export default async function larafetch<T>(
   path: RequestInfo,
-  { ...options }: LarafetchOptions<R> = {},
+  { ...options }: LarafetchOptions,
   request?: Request
-) {
+): Promise<T> {
   const { API_URL, APP_URL } = process.env
 
   let body = undefined,
@@ -70,11 +62,11 @@ export default async function larafetch<T, R extends ResponseType = 'json'>(
   }
 
   try {
-    return await fetch(`${API_URL}${path}`, {
+    return (await fetch(`${API_URL}${path}`, {
       headers,
       method,
       body,
-    })
+    })) as T
   } catch (error) {
     throw error
   }
@@ -108,10 +100,13 @@ export async function getLaravelCookies(setCookie: string): Promise<{
     cookies = setCookie.split(',')
 
   for (let index = 0; index < cookies.length; index++) {
-    const cookie = cookies[index]
+    let cookie = cookies[index]
+    console.log(cookie)
+
     if (cookie.includes(CSRF_COOKIE)) {
       XSRFToken = await getCookie(CSRF_COOKIE, cookie)
     }
+
     if (cookie.includes('laravel_session')) {
       laravelSession = await getCookie('laravel_session', cookie.split(';')[0])
     }

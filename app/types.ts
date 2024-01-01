@@ -20,6 +20,12 @@ export type ResponseMeta = {
   total: number
 }
 
+export type ApiResponse<Data> = {
+  data: Data
+  links: ResponseLinks[]
+  meta: ResponseMeta
+}
+
 export type Category = {
   id: string
   title: string

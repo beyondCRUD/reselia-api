@@ -1,4 +1,5 @@
-import { createCookie } from '@remix-run/node'
+import { createCookie, redirect } from '@remix-run/node'
+import { userEntity } from '~/routes/signin/login'
 
 let secret = process.env.COOKIE_SECRET || 'default'
 
@@ -15,3 +16,19 @@ export let authCookie = createCookie('auth', {
   maxAge: 60 * 60 * 24 * 30, // 30 days
   secrets: [secret],
 })
+
+export async function requireAuthCookie(request: Request) {
+  let cookie = await authCookie.parse(request.headers.get('Cookie'))
+
+  if (!cookie) {
+    throw redirect('/signin', {
+      headers: {
+        'Set-Cookie': await authCookie.serialize('', {
+          maxAge: 0,
+        }),
+      },
+    })
+  }
+
+  return cookie as userEntity
+}

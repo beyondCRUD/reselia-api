@@ -1,7 +1,6 @@
 import { Route } from './types'
 
 const adminRoute = { name: 'Admin', href: '/admin' },
-  userRoute = { name: 'Users', href: '/admin/users' },
   categoryRoute = { name: 'Categories', href: '/admin/categories' }
 
 export const breadcrumbs: {
@@ -9,12 +8,6 @@ export const breadcrumbs: {
 } = {
   '/admin': [adminRoute],
   '/admin/profile': [adminRoute, { name: 'Profile', href: '/profile' }],
-  '/admin/users': [adminRoute, userRoute],
-  '/admin/users/create': [
-    adminRoute,
-    userRoute,
-    { name: 'Create', href: '/admin/users/create' },
-  ],
   '/admin/categories': [adminRoute, categoryRoute],
   '/admin/categories/create': [
     adminRoute,
@@ -28,7 +21,7 @@ export const breadcrumbs: {
   ],
 }
 
-export const navigation: Route[] = [userRoute, categoryRoute]
+export const navigation: Route[] = [categoryRoute]
 
 export const userNavigation: {
   name: string

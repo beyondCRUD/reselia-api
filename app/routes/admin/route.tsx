@@ -1,19 +1,13 @@
-import { LoaderFunctionArgs, json, redirect } from '@remix-run/node'
+import { LoaderFunctionArgs, json } from '@remix-run/node'
 import { Outlet, useLoaderData } from '@remix-run/react'
 import Nav from '~/components/nav'
 import Breadcrumbs from '~/components/breadcrumbs'
-import { authCookie } from '~/services/auth'
-import { userEntity } from '../signin/login'
+import { requireAuthCookie } from '~/services/auth'
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  let cookieString = request.headers.get('Cookie'),
-    userEntityData = (await authCookie.parse(cookieString)) as userEntity
+  let user = await requireAuthCookie(request)
 
-  if (!userEntityData) {
-    return redirect('/signin')
-  }
-
-  return json({ user: userEntityData })
+  return json({ user })
 }
 
 export default function AppAdmin() {

@@ -9,7 +9,7 @@ import {
 } from '@remix-run/react'
 import { RefObject, useEffect, useRef, useState } from 'react'
 import { classNames } from '~/utils'
-import { Category, ResponseLinks, ResponseMeta } from '~/types'
+import { ApiResponse, Category } from '~/types'
 
 import submitRequest from '~/services/submitRequest'
 import larafetch from '~/services/larafetch'
@@ -32,17 +32,10 @@ export async function action({ request }: ActionFunctionArgs) {
   return null
 }
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  let { data } = (await submitRequest(
+export async function loader() {
+  let { data } = await submitRequest<ApiResponse<Category[]>>(
     larafetch('/api/v1/categories', { method: 'get' })
-  )) as {
-    data: {
-      data: Category[]
-      links: ResponseLinks[]
-      meta: ResponseMeta
-    }
-    errors: null
-  }
+  )
 
   return json({ items: data.data })
 }

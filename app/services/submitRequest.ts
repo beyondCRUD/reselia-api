@@ -13,7 +13,7 @@ export default async function submitRequest<T>(
   onSuccess?: (data?: T | Response) => any,
   onValidationError?: (errors: ValidationErrors) => any
 ): Promise<{
-  data: T | object | null | Response
+  data: T
   errors: ValidationErrors | null
 }> {
   try {
