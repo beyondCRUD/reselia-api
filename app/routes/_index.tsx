@@ -4,7 +4,6 @@ import type { MetaFunction } from '@remix-run/node'
 import { Link } from '@remix-run/react'
 import { useState } from 'react'
 import logoAssetUrl from '~/assets/logo.svg'
-import type { appDataType } from '~/data'
 
 export const meta: MetaFunction = () => {
   return [
@@ -13,7 +12,7 @@ export const meta: MetaFunction = () => {
   ]
 }
 
-export default function Index({ appData }: { appData: appDataType }) {
+export default function Index() {
   let [mobileMenuOpen, setMobileMenuOpen] = useState(false),
     navigation = [
       { name: 'Product', href: '#' },

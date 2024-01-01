@@ -1,4 +1,4 @@
-export type Route = { name: string; href: string }
+export type Route = { name: string; href: string; current?: boolean }
 
 export type ResponseLinks = {
   url: string | null
