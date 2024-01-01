@@ -23,7 +23,7 @@ class CategoryController extends Controller
     public function index()
     {
         return CategoryData::collection(
-            $this->model->query()->paginate()
+            $this->model->query()->latest('id')->paginate()
         );
     }
 

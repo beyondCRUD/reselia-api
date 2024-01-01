@@ -4,6 +4,7 @@ namespace Domain\Products\Data;
 
 use Illuminate\Support\Carbon;
 use Spatie\LaravelData\Attributes\Validation\Exists;
+use Spatie\LaravelData\Attributes\Validation\Unique;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
 
@@ -11,6 +12,7 @@ class CategoryData extends Data
 {
     public function __construct(
         public ?string $id,
+        #[Unique('categories', 'title')]
         public string $title,
         #[Exists('categories', 'id')]
         public string|Optional|null $parent_id,

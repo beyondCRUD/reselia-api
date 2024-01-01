@@ -1,15 +1,26 @@
 import { HomeIcon } from '@heroicons/react/20/solid'
-import { Link } from '@remix-run/react'
+import { Link, useLocation } from '@remix-run/react'
+import { breadcrumbs } from '~/utils'
+
+function convertPathname(str: string) {
+  const lastIndex = str.lastIndexOf('/')
+
+  if (lastIndex !== -1) {
+    return str.substring(0, lastIndex)
+  }
+
+  return '/admin'
+}
 
 export default function Breadcrumbs() {
-  // TODO: Replace with actual breadcrumbs
-  let pages = [
-    { name: 'Admin', href: '/admin', current: false },
-    { name: 'Users', href: '/admin/users', current: true },
-  ]
+  let { pathname } = useLocation(),
+    key = convertPathname(pathname),
+    pages = breadcrumbs[key]
+
+  console.log(pathname)
 
   return (
-    <header className="bg-white shadow-sm">
+    <header className="shadow-sm">
       <nav
         className="flex border-b border-gray-200 bg-white"
         aria-label="Breadcrumb"
@@ -44,7 +55,7 @@ export default function Breadcrumbs() {
                 <Link
                   to={page.href}
                   className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
-                  aria-current={page.current ? 'page' : undefined}
+                  aria-current={page.href === pathname ? 'page' : undefined}
                 >
                   {page.name}
                 </Link>

@@ -1,6 +1,6 @@
 import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { classNames, navigation, userNavigation } from '~/utils'
 import { userEntity } from '~/routes/signin/login'
 import logoAssetUrl from '~/assets/logo.svg'
@@ -37,7 +37,6 @@ export default function Nav({ userEntity }: { userEntity: userEntity }) {
                           )
                         }
                         to={item.href}
-                        end
                       >
                         {item.name}
                       </NavLink>
@@ -47,14 +46,6 @@ export default function Nav({ userEntity }: { userEntity: userEntity }) {
               </div>
               <div className="hidden md:block">
                 <div className="ml-4 flex items-center md:ml-6">
-                  <button
-                    type="button"
-                    className="rounded-full bg-indigo-600 p-1 text-indigo-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-600"
-                  >
-                    <span className="sr-only">View notifications</span>
-                    <BellIcon className="h-6 w-6" aria-hidden="true" />
-                  </button>
-
                   {/* Profile dropdown */}
                   <Menu as="div" className="relative ml-3">
                     <div>
@@ -160,13 +151,6 @@ export default function Nav({ userEntity }: { userEntity: userEntity }) {
                     {user.email}
                   </div>
                 </div>
-                <button
-                  type="button"
-                  className="ml-auto flex-shrink-0 rounded-full bg-indigo-600 p-1 text-indigo-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-600"
-                >
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
               </div>
               <div className="mt-3 space-y-1 px-2">
                 {userNavigation.map((item) => (

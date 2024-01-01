@@ -1,63 +1,83 @@
-import { ActionFunctionArgs } from '@remix-run/node'
-import { Form } from '@remix-run/react'
-import { RefObject, useLayoutEffect, useRef, useState } from 'react'
+import { ActionFunctionArgs, LoaderFunctionArgs, json } from '@remix-run/node'
+import {
+  Form,
+  Link,
+  Outlet,
+  useLoaderData,
+  useLocation,
+  useParams,
+} from '@remix-run/react'
+import { RefObject, useEffect, useRef, useState } from 'react'
 import { classNames } from '~/utils'
+import { Category, ResponseLinks, ResponseMeta } from '~/types'
 
-type Person = {
-  name: string
-  title: string
-  email: string
-  role: string
-}
+import submitRequest from '~/services/submitRequest'
+import larafetch from '~/services/larafetch'
 
 export async function action({ request }: ActionFunctionArgs) {
   let formData = await request.formData(),
-    intent = formData.get('intent')
+    intent = formData.get('intent'),
+    selectedID = formData.getAll('id[]')
 
   if (intent === 'delete') {
-    // do something
+    selectedID.forEach((id) => console.log(`deleting ID: ${id}`))
+    // TODO: delete selected users
+  }
+
+  if (intent === 'export') {
+    selectedID.forEach((id) => console.log(`exporting ID: ${id}`))
+    // TODO: export selected users
   }
 
   return null
 }
 
-export default function AdminProducts() {
-  let people: Person[] = [
-      {
-        name: 'Lindsay Walton',
-        title: 'Front-end Developer',
-        email: 'lindsay.walton@example.com',
-        role: 'Member',
-      },
-      {
-        name: 'Lindsay Walton 2',
-        title: 'Front-end Developer 2',
-        email: 'lindsay.walton2@example.com',
-        role: 'Member 2',
-      },
-    ],
+export async function loader({ request }: LoaderFunctionArgs) {
+  let { data } = (await submitRequest(
+    larafetch('/api/v1/categories', { method: 'get' })
+  )) as {
+    data: {
+      data: Category[]
+      links: ResponseLinks[]
+      meta: ResponseMeta
+    }
+    errors: null
+  }
+
+  return json({ items: data.data })
+}
+
+export default function AdminUsers() {
+  let { modul } = useParams(),
+    title = modul
+      ?.toLowerCase()
+      .replace(/(?<= )[^\s]|^./g, (a) => a.toUpperCase()),
+    data = useLoaderData<typeof loader>(),
     checkbox = useRef() as RefObject<HTMLInputElement>,
     [checked, setChecked] = useState(false),
     [indeterminate, setIndeterminate] = useState(false),
-    [selectedPeople, setSelectedPeople] = useState<Person[]>([])
+    [selectedItems, setSelectedItems] = useState<Category[]>([]),
+    items = data.items as Category[],
+    { pathname } = useLocation(),
+    isMutationPage = pathname.includes('/create') || pathname.includes('/edit')
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     let isIndeterminate =
-      selectedPeople.length > 0 && selectedPeople.length < people.length
+      selectedItems.length > 0 && selectedItems.length < items.length
 
-    setChecked(selectedPeople.length === people.length)
+    setChecked(selectedItems.length === items.length)
     setIndeterminate(isIndeterminate)
 
     if (checkbox.current) {
       checkbox.current.indeterminate = isIndeterminate
     }
-  }, [selectedPeople])
+  }, [selectedItems])
 
   function toggleAll() {
     if (checked || indeterminate) {
-      setSelectedPeople([])
+      setSelectedItems([])
     } else {
-      setSelectedPeople(people)
+      setSelectedItems(items)
     }
 
     setChecked(!checked && !indeterminate)
@@ -69,29 +89,42 @@ export default function AdminProducts() {
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <h1 className="text-base font-semibold leading-6 text-gray-900">
-            Users
+            {title}
           </h1>
           <p className="mt-2 text-sm text-gray-700">
-            A list of all the users in your account including their name, title,
-            email and role.
+            A list of all the {modul}.
           </p>
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-          <button
-            type="button"
-            className="block rounded-md bg-indigo-600 px-3 py-1.5 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            Add user
-          </button>
+          {!isMutationPage && (
+            <Link
+              to={`/admin/${modul}/create`}
+              className="block rounded-md bg-indigo-600 px-3 py-1.5 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Create
+            </Link>
+          )}
         </div>
       </div>
 
-      <div className="mt-8 flow-root bg-white rounded-lg">
+      <div className="mt-8">
+        <Outlet />
+      </div>
+
+      <div className="mt-8 flow-root bg-white">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
             <div className="relative">
-              {selectedPeople.length > 0 && (
+              {selectedItems.length > 0 && (
                 <Form method="post">
+                  {selectedItems.map((item) => (
+                    <input
+                      key={item.id}
+                      type="hidden"
+                      name="id[]"
+                      value={item.id}
+                    />
+                  ))}
                   <div className="absolute left-14 top-0 flex h-12 items-center space-x-3 bg-white sm:left-12">
                     <button
                       type="submit"
@@ -126,27 +159,9 @@ export default function AdminProducts() {
                     </th>
                     <th
                       scope="col"
-                      className="min-w-[12rem] py-3.5 pr-3 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Name
-                    </th>
-                    <th
-                      scope="col"
                       className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
                       Title
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Email
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Role
                     </th>
                     <th
                       scope="col"
@@ -157,32 +172,28 @@ export default function AdminProducts() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {people.map((person) => (
+                  {items.map((item) => (
                     <tr
-                      key={person.email}
+                      key={item.id}
                       className={
-                        selectedPeople.includes(person)
-                          ? 'bg-gray-50'
-                          : undefined
+                        selectedItems.includes(item) ? 'bg-gray-50' : undefined
                       }
                     >
                       <td className="relative px-7 sm:w-12 sm:px-6">
-                        {selectedPeople.includes(person) && (
+                        {selectedItems.includes(item) && (
                           <div className="absolute inset-y-0 left-0 w-0.5 bg-indigo-600" />
                         )}
                         <input
                           type="checkbox"
                           className="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                          value={person.email}
-                          checked={selectedPeople.some(
-                            (p) => p.email === person.email
-                          )}
+                          value={item.id}
+                          checked={selectedItems.some((p) => p.id === item.id)}
                           onChange={(e) => {
-                            setSelectedPeople(
+                            setSelectedItems(
                               e.target.checked
-                                ? [...selectedPeople, person]
-                                : selectedPeople.filter(
-                                    (p) => p.email !== e.target.value
+                                ? [...selectedItems, item]
+                                : selectedItems.filter(
+                                    (p) => p.id !== e.target.value
                                   )
                             )
                           }}
@@ -190,30 +201,21 @@ export default function AdminProducts() {
                       </td>
                       <td
                         className={classNames(
-                          'whitespace-nowrap py-4 pr-3 text-sm font-medium',
-                          selectedPeople.includes(person)
+                          'whitespace-nowrap py-4 pl-3 text-sm font-medium',
+                          selectedItems.includes(item)
                             ? 'text-indigo-600'
                             : 'text-gray-900'
                         )}
                       >
-                        {person.name}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.title}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.email}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.role}
+                        {item.title}
                       </td>
                       <td className="whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3">
-                        <a
-                          href="#"
+                        <Link
+                          to={`/admin/${modul}/edit/${item.id}`}
                           className="text-indigo-600 hover:text-indigo-900"
                         >
-                          Edit<span className="sr-only">, {person.name}</span>
-                        </a>
+                          Edit<span className="sr-only">, {item.title}</span>
+                        </Link>
                       </td>
                     </tr>
                   ))}
